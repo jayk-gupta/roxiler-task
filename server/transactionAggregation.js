@@ -17,21 +17,36 @@ exports.transactions = async (req, res) => {
       "November",
       "December",
     ];
-
+    /*
+    
+        "id": 1,
+        "title": "Fjallraven  Foldsack No 1 Backpack Fits 15 Laptops",
+        "price": 329.85,
+        "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop up to 15 inches in the padded sleeve your everyday",
+        "category": "men's clothing",
+        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+        "sold": false,
+        "dateOfSale": "2021-11-27T20:29:54+05:30"
+    },
+    */
     const targetMonth = monthNames.indexOf(month) + 1;
     if (isNaN(targetMonth) || targetMonth < 1 || targetMonth > 12) {
       return res.status(400).json({ error: "Invalid month provided." });
     }
 
-    // Search query
+    // search query
     const searchQuery = {};
     if (search) {
-      const searchRegex = new RegExp(search, "i"); // Case-insensitive search
+      const searchRegex = new RegExp(search, "i"); // case-insensitive search
       searchQuery.$or = [
         { title: searchRegex },
         { description: searchRegex },
-        // Assuming the price field is a string, which is not typical
-        // { price: searchRegex }, // Comment this out if price is numeric
+        {
+          price: {
+            $regex:
+              searchRegex instanceof RegExp ? searchRegex.source : searchRegex,
+          },
+        }, // Assuming search by price is also allowed
       ];
     }
 
@@ -43,7 +58,7 @@ exports.transactions = async (req, res) => {
       ...searchQuery,
     })
       .sort({ dateOfSale: -1 })
-      .skip((parseInt(page, 10) - 1) * parseInt(perPage, 10))
+      .skip((page - 1) * perPage)
       .limit(parseInt(perPage, 10));
 
     const totalCount = await Product.countDocuments({
