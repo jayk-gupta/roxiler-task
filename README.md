@@ -9,9 +9,9 @@ Additionally, backend development is required, focusing on MongoDB aggregations 
 To run the frontend application locally, follow these steps:
 
 1. Install dependencies:
-    npm install
+   ``` npm install```
 2. Start the development server:
-    npm run dev
+    ```  npm run dev```
 
 ## Backend Setup
 
@@ -19,9 +19,9 @@ To run the backend server locally, follow these steps:
 
 Install dependencies:
 1. Install dependencies:
-    npm install
+   ``` npm install```
 2. Start the development server:
-    npm start
+    ```npm start```
 
 Ensure you have MongoDB installed and running. Provide your MongoDB connection string with the username and password in the .env file as follows:
 
